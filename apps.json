@@ -1,0 +1,31 @@
+{
+  "name": "NuvioPlus",
+  "subtitle": "Personal Nuvio fork for SideStore",
+  "description": "NuvioPlus builds from drsphinx/NuvioPlus. Unsigned IPAs for SideStore / AltStore. Includes Ambient Hero Backdrop under Settings → Appearance → Display.",
+  "iconURL": "https://raw.githubusercontent.com/drsphinx/NuvioPlus/cmp-rewrite/iosApp/iosApp/Assets.xcassets/AppIcon.appiconset/app-icon-1024.png",
+  "headerURL": "https://raw.githubusercontent.com/drsphinx/NuvioPlus/cmp-rewrite/iosApp/iosApp/Assets.xcassets/AppIcon.appiconset/app-icon-1024.png",
+  "website": "https://github.com/drsphinx/NuvioPlus",
+  "tintColor": "5B8DEF",
+  "featuredApps": [
+    "com.nuvio.media"
+  ],
+  "apps": [
+    {
+      "name": "NuvioPlus",
+      "bundleIdentifier": "com.nuvio.media",
+      "developerName": "drsphinx",
+      "subtitle": "Nuvio with Ambient Hero Backdrop",
+      "localizedDescription": "Fork of Nuvio Mobile with optional Ambient Hero Backdrop (Settings → Appearance → Display). Install via SideStore.",
+      "iconURL": "https://raw.githubusercontent.com/drsphinx/NuvioPlus/cmp-rewrite/iosApp/iosApp/Assets.xcassets/AppIcon.appiconset/app-icon-1024.png",
+      "tintColor": "5B8DEF",
+      "category": "entertainment",
+      "version": "0.0.0",
+      "versionDate": "2026-08-23T00:00:00Z",
+      "versionDescription": "Placeholder — will be replaced by the next IPA release workflow.",
+      "downloadURL": "https://github.com/drsphinx/NuvioPlus/releases/latest",
+      "size": 0,
+      "versions": []
+    }
+  ],
+  "news": []
+}
