@@ -13,12 +13,14 @@ import platform.Foundation.NSUserDefaults
 actual object ThemeSettingsStorage {
     private const val selectedThemeKey = "selected_theme"
     private const val amoledEnabledKey = "amoled_enabled"
+    private const val homeAmbientBackdropEnabledKey = "home_ambient_backdrop_enabled"
     private const val liquidGlassNativeTabBarEnabledKey = "liquid_glass_native_tab_bar_enabled"
     private const val selectedAppLanguageKey = "selected_app_language"
     private const val navBarStyleKey = "nav_bar_style"
     private val profileScopedSyncKeys = listOf(
         selectedThemeKey,
         amoledEnabledKey,
+        homeAmbientBackdropEnabledKey,
         liquidGlassNativeTabBarEnabledKey,
         navBarStyleKey,
     )
@@ -42,6 +44,23 @@ actual object ThemeSettingsStorage {
 
     actual fun saveAmoledEnabled(enabled: Boolean) {
         NSUserDefaults.standardUserDefaults.setBool(enabled, forKey = ProfileScopedKey.of(amoledEnabledKey))
+    }
+
+    actual fun loadHomeAmbientBackdropEnabled(): Boolean? {
+        val defaults = NSUserDefaults.standardUserDefaults
+        val key = ProfileScopedKey.of(homeAmbientBackdropEnabledKey)
+        return if (defaults.objectForKey(key) != null) {
+            defaults.boolForKey(key)
+        } else {
+            null
+        }
+    }
+
+    actual fun saveHomeAmbientBackdropEnabled(enabled: Boolean) {
+        NSUserDefaults.standardUserDefaults.setBool(
+            enabled,
+            forKey = ProfileScopedKey.of(homeAmbientBackdropEnabledKey),
+        )
     }
 
     actual fun loadLiquidGlassNativeTabBarEnabled(): Boolean? {
@@ -100,6 +119,7 @@ actual object ThemeSettingsStorage {
     actual fun exportToSyncPayload(): JsonObject = buildJsonObject {
         loadSelectedTheme()?.let { put(selectedThemeKey, encodeSyncString(it)) }
         loadAmoledEnabled()?.let { put(amoledEnabledKey, encodeSyncBoolean(it)) }
+        loadHomeAmbientBackdropEnabled()?.let { put(homeAmbientBackdropEnabledKey, encodeSyncBoolean(it)) }
         loadLiquidGlassNativeTabBarEnabled()?.let { put(liquidGlassNativeTabBarEnabledKey, encodeSyncBoolean(it)) }
         loadNavBarStyle()?.let { put(navBarStyleKey, encodeSyncString(it)) }
     }
@@ -111,6 +131,7 @@ actual object ThemeSettingsStorage {
 
         payload.decodeSyncString(selectedThemeKey)?.let(::saveSelectedTheme)
         payload.decodeSyncBoolean(amoledEnabledKey)?.let(::saveAmoledEnabled)
+        payload.decodeSyncBoolean(homeAmbientBackdropEnabledKey)?.let(::saveHomeAmbientBackdropEnabled)
         payload.decodeSyncBoolean(liquidGlassNativeTabBarEnabledKey)?.let(::saveLiquidGlassNativeTabBarEnabled)
         payload.decodeSyncString(navBarStyleKey)?.let(::saveNavBarStyle)
         applySelectedAppLanguage(loadSelectedAppLanguage() ?: AppLanguage.DEVICE.code)

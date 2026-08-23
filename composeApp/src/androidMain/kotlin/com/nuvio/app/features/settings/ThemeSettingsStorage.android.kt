@@ -17,12 +17,14 @@ actual object ThemeSettingsStorage {
     private const val preferencesName = "nuvio_theme_settings"
     private const val selectedThemeKey = "selected_theme"
     private const val amoledEnabledKey = "amoled_enabled"
+    private const val homeAmbientBackdropEnabledKey = "home_ambient_backdrop_enabled"
     private const val liquidGlassNativeTabBarEnabledKey = "liquid_glass_native_tab_bar_enabled"
     private const val selectedAppLanguageKey = "selected_app_language"
     private const val NAV_BAR_STYLE_KEY = "nav_bar_style"
     private val profileScopedSyncKeys = listOf(
         selectedThemeKey,
         amoledEnabledKey,
+        homeAmbientBackdropEnabledKey,
         liquidGlassNativeTabBarEnabledKey,
         NAV_BAR_STYLE_KEY,
     )
@@ -54,6 +56,19 @@ actual object ThemeSettingsStorage {
         preferences
             ?.edit()
             ?.putBoolean(ProfileScopedKey.of(amoledEnabledKey), enabled)
+            ?.apply()
+    }
+
+    actual fun loadHomeAmbientBackdropEnabled(): Boolean? =
+        preferences?.let { prefs ->
+            val key = ProfileScopedKey.of(homeAmbientBackdropEnabledKey)
+            if (prefs.contains(key)) prefs.getBoolean(key, false) else null
+        }
+
+    actual fun saveHomeAmbientBackdropEnabled(enabled: Boolean) {
+        preferences
+            ?.edit()
+            ?.putBoolean(ProfileScopedKey.of(homeAmbientBackdropEnabledKey), enabled)
             ?.apply()
     }
 
@@ -108,6 +123,7 @@ actual object ThemeSettingsStorage {
     actual fun exportToSyncPayload(): JsonObject = buildJsonObject {
         loadSelectedTheme()?.let { put(selectedThemeKey, encodeSyncString(it)) }
         loadAmoledEnabled()?.let { put(amoledEnabledKey, encodeSyncBoolean(it)) }
+        loadHomeAmbientBackdropEnabled()?.let { put(homeAmbientBackdropEnabledKey, encodeSyncBoolean(it)) }
         loadLiquidGlassNativeTabBarEnabled()?.let { put(liquidGlassNativeTabBarEnabledKey, encodeSyncBoolean(it)) }
         loadNavBarStyle()?.let { put(NAV_BAR_STYLE_KEY, encodeSyncString(it)) }
     }
@@ -119,6 +135,7 @@ actual object ThemeSettingsStorage {
 
         payload.decodeSyncString(selectedThemeKey)?.let(::saveSelectedTheme)
         payload.decodeSyncBoolean(amoledEnabledKey)?.let(::saveAmoledEnabled)
+        payload.decodeSyncBoolean(homeAmbientBackdropEnabledKey)?.let(::saveHomeAmbientBackdropEnabled)
         payload.decodeSyncBoolean(liquidGlassNativeTabBarEnabledKey)?.let(::saveLiquidGlassNativeTabBarEnabled)
         payload.decodeSyncString(NAV_BAR_STYLE_KEY)?.let(::saveNavBarStyle)
         applySelectedAppLanguage(loadSelectedAppLanguage() ?: AppLanguage.DEVICE.code)

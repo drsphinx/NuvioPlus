@@ -379,6 +379,15 @@ internal fun settingsSearchEntries(
         section = stringResource(Res.string.settings_appearance_section_display),
         icon = Icons.Rounded.Palette,
     )
+    addRow(
+        page = SettingsPage.Appearance,
+        key = "home-ambient-backdrop",
+        title = stringResource(Res.string.settings_appearance_home_ambient_backdrop),
+        description = stringResource(Res.string.settings_appearance_home_ambient_backdrop_description),
+        pageLabel = layoutPage,
+        section = stringResource(Res.string.settings_appearance_section_display),
+        icon = Icons.Rounded.Palette,
+    )
     if (liquidGlassNativeTabBarSupported) {
         addRow(
             page = SettingsPage.Appearance,

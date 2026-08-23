@@ -1,5 +1,6 @@
 package com.nuvio.app.features.home
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -14,6 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -43,12 +45,14 @@ import com.nuvio.app.features.details.seriesPrimaryAction
 import com.nuvio.app.features.home.components.HomeCatalogRowSection
 import com.nuvio.app.features.home.components.HomeContinueWatchingSection
 import com.nuvio.app.features.home.components.HomeEmptyStateCard
+import com.nuvio.app.features.home.components.HomeAmbientBackdrop
 import com.nuvio.app.features.home.components.HomeHeroReservedSpace
 import com.nuvio.app.features.home.components.HomeHeroSection
 import com.nuvio.app.features.home.components.HomeSkeletonHero
 import com.nuvio.app.features.home.components.HomeSkeletonRow
 import com.nuvio.app.features.home.components.HomeContinueWatchingSectionBottomPadding
 import com.nuvio.app.features.home.components.ContinueWatchingLayout
+import com.nuvio.app.features.settings.ThemeSettingsRepository
 import com.nuvio.app.features.tracking.TrackingSettingsRepository
 import com.nuvio.app.features.tracking.WatchProgressSource
 import com.nuvio.app.features.watched.WatchedItem
@@ -121,6 +125,7 @@ fun HomeScreen(
         AddonRepository.initialize()
         CollectionRepository.initialize()
         ContinueWatchingPreferencesRepository.ensureLoaded()
+        ThemeSettingsRepository.ensureLoaded()
         WatchedRepository.ensureLoaded()
         WatchProgressRepository.ensureLoaded()
         val authState = AuthRepository.state.value
@@ -135,6 +140,10 @@ fun HomeScreen(
         HomeCatalogSettingsRepository.snapshot()
         HomeCatalogSettingsRepository.uiState
     }.collectAsStateWithLifecycle()
+    val homeAmbientBackdropEnabled by remember {
+        ThemeSettingsRepository.homeAmbientBackdropEnabled
+    }.collectAsStateWithLifecycle()
+    var ambientArtworkUrl by remember { mutableStateOf<String?>(null) }
     val homeListState = rememberLazyListState()
     val continueWatchingListState = rememberLazyListState()
     val upcomingListState = rememberLazyListState()
@@ -808,11 +817,23 @@ fun HomeScreen(
 
     val hasActiveAddons = enabledAddons.any { it.manifest != null }
     val showHeroSlot = homeSettingsUiState.heroEnabled
+    val showAmbientBackdrop = homeAmbientBackdropEnabled && showHeroSlot
     val isResolvingHeroSources = enabledAddons.any { it.isRefreshing } || homeUiState.isLoading
     val showHeroSkeleton = showHeroSlot &&
         homeUiState.heroItems.isEmpty() &&
         isResolvingHeroSources
     var firstCatalogReported by remember { mutableStateOf(false) }
+
+    LaunchedEffect(showAmbientBackdrop, homeUiState.heroItems) {
+        if (!showAmbientBackdrop) {
+            ambientArtworkUrl = null
+            return@LaunchedEffect
+        }
+        if (ambientArtworkUrl == null) {
+            val first = homeUiState.heroItems.firstOrNull()
+            ambientArtworkUrl = first?.banner ?: first?.poster
+        }
+    }
 
     LaunchedEffect(homeUiState.sections.firstOrNull()?.key, onFirstCatalogRendered) {
         if (firstCatalogReported || homeUiState.sections.isEmpty()) return@LaunchedEffect
@@ -891,12 +912,18 @@ fun HomeScreen(
             Modifier
         }
 
-        NuvioScreen(
-            modifier = Modifier.fillMaxSize().then(heroStretchModifier),
-            horizontalPadding = 0.dp,
-            topPadding = if (showHeroSlot) 0.dp else null,
-            listState = homeListState,
-        ) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            if (showAmbientBackdrop) {
+                HomeAmbientBackdrop(imageUrl = ambientArtworkUrl)
+            }
+
+            NuvioScreen(
+                modifier = Modifier.fillMaxSize().then(heroStretchModifier),
+                horizontalPadding = 0.dp,
+                topPadding = if (showHeroSlot) 0.dp else null,
+                listState = homeListState,
+                containerColor = if (showAmbientBackdrop) Color.Transparent else null,
+            ) {
             if (showHeroSlot) {
                 item {
                     when {
@@ -913,6 +940,8 @@ fun HomeScreen(
                             mobileBelowSectionHeightHint = mobileHeroBelowSectionHeightHint,
                             listState = homeListState,
                             stretchPx = { heroStretchState.stretchPx },
+                            ambientBackdropEnabled = showAmbientBackdrop,
+                            onAmbientArtworkUrlChange = { ambientArtworkUrl = it },
                             onItemClick = onPosterClick,
                         )
 
@@ -1048,6 +1077,7 @@ fun HomeScreen(
                         }
                     }
                 }
+            }
             }
         }
     }

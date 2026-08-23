@@ -66,6 +66,8 @@ import nuvio.composeapp.generated.resources.settings_appearance_nav_bar_style_sh
 import nuvio.composeapp.generated.resources.settings_appearance_amoled_black
 import nuvio.composeapp.generated.resources.settings_appearance_amoled_description
 import nuvio.composeapp.generated.resources.settings_appearance_continue_watching_description
+import nuvio.composeapp.generated.resources.settings_appearance_home_ambient_backdrop
+import nuvio.composeapp.generated.resources.settings_appearance_home_ambient_backdrop_description
 import nuvio.composeapp.generated.resources.settings_appearance_liquid_glass
 import nuvio.composeapp.generated.resources.settings_appearance_liquid_glass_description
 import nuvio.composeapp.generated.resources.settings_appearance_poster_customization_description
@@ -89,6 +91,8 @@ internal fun LazyListScope.appearanceSettingsContent(
     onThemeSelected: (AppTheme) -> Unit,
     amoledEnabled: Boolean,
     onAmoledToggle: (Boolean) -> Unit,
+    homeAmbientBackdropEnabled: Boolean,
+    onHomeAmbientBackdropToggle: (Boolean) -> Unit,
     liquidGlassNativeTabBarSupported: Boolean,
     liquidGlassNativeTabBarEnabled: Boolean,
     onLiquidGlassNativeTabBarToggle: (Boolean) -> Unit,
@@ -176,6 +180,14 @@ internal fun LazyListScope.appearanceSettingsContent(
                     checked = amoledEnabled,
                     isTablet = isTablet,
                     onCheckedChange = onAmoledToggle,
+                )
+                SettingsGroupDivider(isTablet = isTablet)
+                SettingsSwitchRow(
+                    title = stringResource(Res.string.settings_appearance_home_ambient_backdrop),
+                    description = stringResource(Res.string.settings_appearance_home_ambient_backdrop_description),
+                    checked = homeAmbientBackdropEnabled,
+                    isTablet = isTablet,
+                    onCheckedChange = onHomeAmbientBackdropToggle,
                 )
                 if (liquidGlassNativeTabBarSupported) {
                     SettingsGroupDivider(isTablet = isTablet)

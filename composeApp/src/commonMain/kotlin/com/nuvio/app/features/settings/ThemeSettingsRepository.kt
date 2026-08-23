@@ -23,6 +23,9 @@ object ThemeSettingsRepository {
     private val _amoledEnabled = MutableStateFlow(false)
     val amoledEnabled: StateFlow<Boolean> = _amoledEnabled.asStateFlow()
 
+    private val _homeAmbientBackdropEnabled = MutableStateFlow(false)
+    val homeAmbientBackdropEnabled: StateFlow<Boolean> = _homeAmbientBackdropEnabled.asStateFlow()
+
     private val _liquidGlassNativeTabBarEnabled = MutableStateFlow(false)
     val liquidGlassNativeTabBarEnabled: StateFlow<Boolean> = _liquidGlassNativeTabBarEnabled.asStateFlow()
 
@@ -50,6 +53,7 @@ object ThemeSettingsRepository {
         _selectedThemePreference.value = null
         _selectedTheme.value = AppTheme.WHITE
         _amoledEnabled.value = false
+        _homeAmbientBackdropEnabled.value = false
         _liquidGlassNativeTabBarEnabled.value = false
         NativeTabBridge.publishAccentColor(AppTheme.WHITE.nativeTabAccentHex())
         NativeTabBridge.publishLiquidGlassEnabled(false)
@@ -72,6 +76,8 @@ object ThemeSettingsRepository {
         _selectedThemePreference.value = theme
         applyEffectiveTheme()
         _amoledEnabled.value = ThemeSettingsStorage.loadAmoledEnabled() ?: false
+        _homeAmbientBackdropEnabled.value =
+            ThemeSettingsStorage.loadHomeAmbientBackdropEnabled() ?: false
         val liquidGlassEnabled = ThemeSettingsStorage.loadLiquidGlassNativeTabBarEnabled() ?: false
         _liquidGlassNativeTabBarEnabled.value = liquidGlassEnabled
         NativeTabBridge.publishLiquidGlassEnabled(liquidGlassEnabled)
@@ -94,6 +100,13 @@ object ThemeSettingsRepository {
         if (_amoledEnabled.value == enabled) return
         _amoledEnabled.value = enabled
         ThemeSettingsStorage.saveAmoledEnabled(enabled)
+    }
+
+    fun setHomeAmbientBackdrop(enabled: Boolean) {
+        ensureLoaded()
+        if (_homeAmbientBackdropEnabled.value == enabled) return
+        _homeAmbientBackdropEnabled.value = enabled
+        ThemeSettingsStorage.saveHomeAmbientBackdropEnabled(enabled)
     }
 
     fun setLiquidGlassNativeTabBar(enabled: Boolean) {

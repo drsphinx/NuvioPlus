@@ -95,6 +95,8 @@ fun HomeHeroSection(
     mobileBelowSectionHeightHint: Dp? = null,
     listState: LazyListState? = null,
     stretchPx: () -> Float = { 0f },
+    ambientBackdropEnabled: Boolean = false,
+    onAmbientArtworkUrlChange: ((String?) -> Unit)? = null,
     onItemClick: ((MetaPreview) -> Unit)? = null,
 ) {
     if (items.isEmpty()) return
@@ -170,6 +172,16 @@ fun HomeHeroSection(
             ?.let(items::get)
             ?: items[currentPage]
 
+        LaunchedEffect(currentItem.id, currentItem.banner, currentItem.poster, onAmbientArtworkUrlChange) {
+            onAmbientArtworkUrlChange?.invoke(currentItem.banner ?: currentItem.poster)
+        }
+
+        val overlayTopAlpha = if (ambientBackdropEnabled) 0.02f else 0.02f
+        val overlayMidLowAlpha = if (ambientBackdropEnabled) 0.08f else 0.12f
+        val overlayMidHighAlpha = if (ambientBackdropEnabled) 0.18f else 0.34f
+        val overlayBottomAlpha = if (ambientBackdropEnabled) 0.42f else 0.78f
+        val bottomFadeEndAlpha = if (ambientBackdropEnabled) 0.55f else 1f
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -219,10 +231,10 @@ fun HomeHeroSection(
                         .background(
                             Brush.verticalGradient(
                                 colors = listOf(
-                                    MaterialTheme.colorScheme.background.copy(alpha = 0.02f),
-                                    MaterialTheme.colorScheme.background.copy(alpha = 0.12f),
-                                    MaterialTheme.colorScheme.background.copy(alpha = 0.34f),
-                                    MaterialTheme.colorScheme.background.copy(alpha = 0.78f),
+                                    MaterialTheme.colorScheme.background.copy(alpha = overlayTopAlpha),
+                                    MaterialTheme.colorScheme.background.copy(alpha = overlayMidLowAlpha),
+                                    MaterialTheme.colorScheme.background.copy(alpha = overlayMidHighAlpha),
+                                    MaterialTheme.colorScheme.background.copy(alpha = overlayBottomAlpha),
                                 ),
                             ),
                         ),
@@ -237,7 +249,7 @@ fun HomeHeroSection(
                             Brush.verticalGradient(
                                 colors = listOf(
                                     MaterialTheme.colorScheme.background.copy(alpha = 0f),
-                                    MaterialTheme.colorScheme.background,
+                                    MaterialTheme.colorScheme.background.copy(alpha = bottomFadeEndAlpha),
                                 ),
                             ),
                         ),

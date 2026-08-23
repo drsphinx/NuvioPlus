@@ -149,6 +149,9 @@ fun SettingsScreen(
             ThemeSettingsRepository.selectedTheme
         }.collectAsStateWithLifecycle()
         val amoledEnabled by remember { ThemeSettingsRepository.amoledEnabled }.collectAsStateWithLifecycle()
+        val homeAmbientBackdropEnabled by remember {
+            ThemeSettingsRepository.homeAmbientBackdropEnabled
+        }.collectAsStateWithLifecycle()
         val liquidGlassNativeTabBarEnabled by remember {
             ThemeSettingsRepository.liquidGlassNativeTabBarEnabled
         }.collectAsStateWithLifecycle()
@@ -402,6 +405,8 @@ fun SettingsScreen(
                 onThemeSelected = ThemeSettingsRepository::setTheme,
                 amoledEnabled = amoledEnabled,
                 onAmoledToggle = ThemeSettingsRepository::setAmoled,
+                homeAmbientBackdropEnabled = homeAmbientBackdropEnabled,
+                onHomeAmbientBackdropToggle = ThemeSettingsRepository::setHomeAmbientBackdrop,
                 liquidGlassNativeTabBarSupported = liquidGlassNativeTabBarSupported,
                 liquidGlassNativeTabBarEnabled = liquidGlassNativeTabBarEnabled,
                 onLiquidGlassNativeTabBarToggle = ThemeSettingsRepository::setLiquidGlassNativeTabBar,
@@ -466,6 +471,8 @@ fun SettingsScreen(
                 onThemeSelected = ThemeSettingsRepository::setTheme,
                 amoledEnabled = amoledEnabled,
                 onAmoledToggle = ThemeSettingsRepository::setAmoled,
+                homeAmbientBackdropEnabled = homeAmbientBackdropEnabled,
+                onHomeAmbientBackdropToggle = ThemeSettingsRepository::setHomeAmbientBackdrop,
                 liquidGlassNativeTabBarSupported = liquidGlassNativeTabBarSupported,
                 liquidGlassNativeTabBarEnabled = liquidGlassNativeTabBarEnabled,
                 onLiquidGlassNativeTabBarToggle = ThemeSettingsRepository::setLiquidGlassNativeTabBar,
@@ -540,6 +547,8 @@ private fun MobileSettingsScreen(
     onThemeSelected: (AppTheme) -> Unit,
     amoledEnabled: Boolean,
     onAmoledToggle: (Boolean) -> Unit,
+    homeAmbientBackdropEnabled: Boolean,
+    onHomeAmbientBackdropToggle: (Boolean) -> Unit,
     liquidGlassNativeTabBarSupported: Boolean,
     liquidGlassNativeTabBarEnabled: Boolean,
     onLiquidGlassNativeTabBarToggle: (Boolean) -> Unit,
@@ -741,6 +750,8 @@ private fun MobileSettingsScreen(
                     onThemeSelected = onThemeSelected,
                     amoledEnabled = amoledEnabled,
                     onAmoledToggle = onAmoledToggle,
+                    homeAmbientBackdropEnabled = homeAmbientBackdropEnabled,
+                    onHomeAmbientBackdropToggle = onHomeAmbientBackdropToggle,
                     liquidGlassNativeTabBarSupported = liquidGlassNativeTabBarSupported,
                     liquidGlassNativeTabBarEnabled = liquidGlassNativeTabBarEnabled,
                     onLiquidGlassNativeTabBarToggle = onLiquidGlassNativeTabBarToggle,
@@ -904,6 +915,8 @@ private fun TabletSettingsScreen(
     onThemeSelected: (AppTheme) -> Unit,
     amoledEnabled: Boolean,
     onAmoledToggle: (Boolean) -> Unit,
+    homeAmbientBackdropEnabled: Boolean,
+    onHomeAmbientBackdropToggle: (Boolean) -> Unit,
     liquidGlassNativeTabBarSupported: Boolean,
     liquidGlassNativeTabBarEnabled: Boolean,
     onLiquidGlassNativeTabBarToggle: (Boolean) -> Unit,
@@ -1161,6 +1174,8 @@ private fun TabletSettingsScreen(
                         onThemeSelected = onThemeSelected,
                         amoledEnabled = amoledEnabled,
                         onAmoledToggle = onAmoledToggle,
+                        homeAmbientBackdropEnabled = homeAmbientBackdropEnabled,
+                        onHomeAmbientBackdropToggle = onHomeAmbientBackdropToggle,
                         liquidGlassNativeTabBarSupported = liquidGlassNativeTabBarSupported,
                         liquidGlassNativeTabBarEnabled = liquidGlassNativeTabBarEnabled,
                         onLiquidGlassNativeTabBarToggle = onLiquidGlassNativeTabBarToggle,

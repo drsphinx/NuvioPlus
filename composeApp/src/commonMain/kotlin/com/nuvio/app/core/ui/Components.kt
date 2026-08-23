@@ -81,6 +81,7 @@ fun NuvioScreen(
     horizontalPadding: Dp = MaterialTheme.nuvio.spacing.screenHorizontal,
     topPadding: Dp? = null,
     listState: LazyListState = rememberLazyListState(),
+    containerColor: Color? = null,
     content: LazyListScope.() -> Unit,
 ) {
     val tokens = MaterialTheme.nuvio
@@ -89,7 +90,7 @@ fun NuvioScreen(
         state = listState,
         modifier = modifier
             .fillMaxSize()
-            .background(tokens.colors.background),
+            .background(containerColor ?: tokens.colors.background),
         contentPadding = PaddingValues(
             start = horizontalPadding,
             top = topPadding ?: tokens.spacing.screenTop + statusBarTop + nuvioPlatformExtraTopPadding,
