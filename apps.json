@@ -1,7 +1,7 @@
 {
   "name": "NuvioPlus",
   "subtitle": "Personal Nuvio fork for SideStore",
-  "description": "NuvioPlus builds from drsphinx/NuvioPlus. Unsigned IPAs for SideStore / AltStore. Includes Ambient Hero Backdrop under Settings → Appearance → Display.",
+  "description": "NuvioPlus builds from drsphinx/NuvioPlus. Unsigned IPAs for SideStore / AltStore. Includes Ambient Hero Backdrop under Settings \u2192 Appearance \u2192 Display.",
   "iconURL": "https://raw.githubusercontent.com/drsphinx/NuvioPlus/cmp-rewrite/iosApp/iosApp/Assets.xcassets/AppIcon.appiconset/app-icon-1024.png",
   "headerURL": "https://raw.githubusercontent.com/drsphinx/NuvioPlus/cmp-rewrite/iosApp/iosApp/Assets.xcassets/AppIcon.appiconset/app-icon-1024.png",
   "website": "https://github.com/drsphinx/NuvioPlus",
@@ -15,16 +15,26 @@
       "bundleIdentifier": "com.nuvio.media",
       "developerName": "drsphinx",
       "subtitle": "Nuvio with Ambient Hero Backdrop",
-      "localizedDescription": "Fork of Nuvio Mobile with optional Ambient Hero Backdrop (Settings → Appearance → Display). Install via SideStore.",
+      "localizedDescription": "Fork of Nuvio Mobile with optional Ambient Hero Backdrop (Settings \u2192 Appearance \u2192 Display). Install via SideStore.",
       "iconURL": "https://raw.githubusercontent.com/drsphinx/NuvioPlus/cmp-rewrite/iosApp/iosApp/Assets.xcassets/AppIcon.appiconset/app-icon-1024.png",
       "tintColor": "5B8DEF",
       "category": "entertainment",
-      "version": "0.0.0",
-      "versionDate": "2026-08-23T00:00:00Z",
-      "versionDescription": "Placeholder — will be replaced by the next IPA release workflow.",
-      "downloadURL": "https://github.com/drsphinx/NuvioPlus/releases/latest",
-      "size": 0,
-      "versions": []
+      "version": "0.4.8",
+      "versionDate": "2026-08-23T09:27:31Z",
+      "versionDescription": "NuvioPlus 0.4.8 (112) \u2014 Ambient Hero Backdrop + upstream.",
+      "downloadURL": "https://github.com/drsphinx/NuvioPlus/releases/download/nuvioplus-0.4.8-b112/NuvioPlus-v0.4.8.ipa",
+      "size": 48991067,
+      "versions": [
+        {
+          "version": "0.4.8",
+          "buildVersion": "112",
+          "date": "2026-08-23T09:27:31Z",
+          "localizedDescription": "NuvioPlus 0.4.8 (112) \u2014 Ambient Hero Backdrop + upstream.",
+          "downloadURL": "https://github.com/drsphinx/NuvioPlus/releases/download/nuvioplus-0.4.8-b112/NuvioPlus-v0.4.8.ipa",
+          "size": 48991067,
+          "minOSVersion": "16.1"
+        }
+      ]
     }
   ],
   "news": []
