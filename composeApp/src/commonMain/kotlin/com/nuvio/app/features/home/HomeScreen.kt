@@ -872,6 +872,7 @@ fun HomeScreen(
     }
 
     BoxWithConstraints(modifier = modifier.fillMaxSize()) {
+        val viewportHeight = maxHeight
         val homeSectionPadding = homeSectionHorizontalPaddingForWidth(maxWidth.value)
         val continueWatchingLayout = rememberContinueWatchingLayout(maxWidth.value)
         val posterCardStyle = rememberPosterCardStyleUiState()
@@ -929,14 +930,14 @@ fun HomeScreen(
                     when {
                         showHeroSkeleton -> HomeSkeletonHero(
                             modifier = Modifier,
-                            viewportHeight = maxHeight,
+                            viewportHeight = viewportHeight,
                             mobileBelowSectionHeightHint = mobileHeroBelowSectionHeightHint,
                         )
 
                         homeUiState.heroItems.isNotEmpty() -> HomeHeroSection(
                             items = homeUiState.heroItems,
                             modifier = Modifier,
-                            viewportHeight = maxHeight,
+                            viewportHeight = viewportHeight,
                             mobileBelowSectionHeightHint = mobileHeroBelowSectionHeightHint,
                             listState = homeListState,
                             stretchPx = { heroStretchState.stretchPx },
@@ -947,7 +948,7 @@ fun HomeScreen(
 
                         else -> HomeHeroReservedSpace(
                             modifier = Modifier,
-                            viewportHeight = maxHeight,
+                            viewportHeight = viewportHeight,
                             mobileBelowSectionHeightHint = mobileHeroBelowSectionHeightHint,
                         )
                     }
