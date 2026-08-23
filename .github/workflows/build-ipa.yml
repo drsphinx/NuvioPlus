@@ -172,27 +172,63 @@ jobs:
           find "${ENGINE_DEST}" -maxdepth 4 -type f -print
 
       - name: Generate local.properties
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          SUPABASE_FALLBACK_URL: ${{ secrets.SUPABASE_FALLBACK_URL }}
+          TRAKT_CLIENT_ID: ${{ secrets.TRAKT_CLIENT_ID }}
+          TRAKT_CLIENT_SECRET: ${{ secrets.TRAKT_CLIENT_SECRET }}
+          TRAKT_REDIRECT_URI: ${{ secrets.TRAKT_REDIRECT_URI }}
+          SIMKL_CLIENT_ID: ${{ secrets.SIMKL_CLIENT_ID }}
+          SIMKL_CLIENT_SECRET: ${{ secrets.SIMKL_CLIENT_SECRET }}
+          SIMKL_REDIRECT_URI: ${{ secrets.SIMKL_REDIRECT_URI }}
+          PREMIUMIZE_CLIENT_ID: ${{ secrets.PREMIUMIZE_CLIENT_ID }}
+          PREMIUMIZE_CLIENT_SECRET: ${{ secrets.PREMIUMIZE_CLIENT_SECRET }}
+          PREMIUMIZE_REDIRECT_URI: ${{ secrets.PREMIUMIZE_REDIRECT_URI }}
+          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+          INTRODB_API_URL: ${{ secrets.INTRODB_API_URL }}
+          IMDB_RATINGS_API_BASE_URL: ${{ secrets.IMDB_RATINGS_API_BASE_URL }}
+          IMDB_TAPFRAME_API_BASE_URL: ${{ secrets.IMDB_TAPFRAME_API_BASE_URL }}
+          CONTRIBUTIONS_URL: ${{ secrets.CONTRIBUTIONS_URL }}
+          DONATIONS_BASE_URL: ${{ secrets.DONATIONS_BASE_URL }}
+          DONATIONS_DONATE_URL: ${{ secrets.DONATIONS_DONATE_URL }}
+          DIRECT_DEBRID_API_BASE_URL: ${{ secrets.DIRECT_DEBRID_API_BASE_URL }}
         run: |
-          cat << 'EOF' > local.properties
-          NUVIO_SUPABASE_URL=${{ secrets.SUPABASE_URL }}
-          NUVIO_SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
-          TRAKT_CLIENT_ID=${{ secrets.TRAKT_CLIENT_ID }}
-          TRAKT_CLIENT_SECRET=${{ secrets.TRAKT_CLIENT_SECRET }}
-          TRAKT_REDIRECT_URI=${{ secrets.TRAKT_REDIRECT_URI }}
-          SIMKL_CLIENT_ID=${{ secrets.SIMKL_CLIENT_ID }}
-          SIMKL_CLIENT_SECRET=${{ secrets.SIMKL_CLIENT_SECRET }}
-          SIMKL_REDIRECT_URI=${{ secrets.SIMKL_REDIRECT_URI }}
-          PREMIUMIZE_CLIENT_ID=${{ secrets.PREMIUMIZE_CLIENT_ID }}
-          PREMIUMIZE_CLIENT_SECRET=${{ secrets.PREMIUMIZE_CLIENT_SECRET }}
-          PREMIUMIZE_REDIRECT_URI=${{ secrets.PREMIUMIZE_REDIRECT_URI }}
-          TMDB_API_KEY=${{ secrets.TMDB_API_KEY }}
-          INTRODB_API_URL=${{ secrets.INTRODB_API_URL }}
-          CONTRIBUTIONS_URL=${{ secrets.CONTRIBUTIONS_URL }}
-          DONATIONS_BASE_URL=${{ secrets.DONATIONS_BASE_URL }}
-          DONATIONS_DONATE_URL=${{ secrets.DONATIONS_DONATE_URL }}
-          DIRECT_DEBRID_API_BASE_URL=${{ secrets.DIRECT_DEBRID_API_BASE_URL }}
+          set -euo pipefail
+          # Public client config from official Nuvio builds (same as Play Store / TestFlight).
+          : "${SUPABASE_URL:=https://api.nuvio.tv}"
+          : "${SUPABASE_ANON_KEY:=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzgxNTIxMzQ2LCJleHAiOjE5MzkyMDEzNDZ9.tmQaj682pwzehpqlgCDMnySOqiUvpgRbrE43T4VJpDI}"
+          : "${SUPABASE_FALLBACK_URL:=https://api-two.nuvioapp.space}"
+          : "${TRAKT_REDIRECT_URI:=nuvio://auth/trakt}"
+          : "${SIMKL_REDIRECT_URI:=nuvio://auth/simkl}"
+          : "${INTRODB_API_URL:=https://api.introdb.app/}"
+          : "${IMDB_RATINGS_API_BASE_URL:=https://imdb.tapframe.space/}"
+          : "${IMDB_TAPFRAME_API_BASE_URL:=https://imdb.tapframe.space/}"
+          : "${DONATIONS_BASE_URL:=https://donate.nuvio.tv}"
+          cat > local.properties <<EOF
+          NUVIO_SUPABASE_URL=${SUPABASE_URL}
+          NUVIO_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+          NUVIO_SUPABASE_FALLBACK_URL=${SUPABASE_FALLBACK_URL}
+          TRAKT_CLIENT_ID=${TRAKT_CLIENT_ID}
+          TRAKT_CLIENT_SECRET=${TRAKT_CLIENT_SECRET}
+          TRAKT_REDIRECT_URI=${TRAKT_REDIRECT_URI}
+          SIMKL_CLIENT_ID=${SIMKL_CLIENT_ID}
+          SIMKL_CLIENT_SECRET=${SIMKL_CLIENT_SECRET}
+          SIMKL_REDIRECT_URI=${SIMKL_REDIRECT_URI}
+          PREMIUMIZE_CLIENT_ID=${PREMIUMIZE_CLIENT_ID}
+          PREMIUMIZE_CLIENT_SECRET=${PREMIUMIZE_CLIENT_SECRET}
+          PREMIUMIZE_REDIRECT_URI=${PREMIUMIZE_REDIRECT_URI}
+          TMDB_API_KEY=${TMDB_API_KEY}
+          INTRODB_API_URL=${INTRODB_API_URL}
+          IMDB_RATINGS_API_BASE_URL=${IMDB_RATINGS_API_BASE_URL}
+          IMDB_TAPFRAME_API_BASE_URL=${IMDB_TAPFRAME_API_BASE_URL}
+          CONTRIBUTIONS_URL=${CONTRIBUTIONS_URL}
+          DONATIONS_BASE_URL=${DONATIONS_BASE_URL}
+          DONATIONS_DONATE_URL=${DONATIONS_DONATE_URL}
+          DIRECT_DEBRID_API_BASE_URL=${DIRECT_DEBRID_API_BASE_URL}
           NUVIO_IOS_DISTRIBUTION=full
           EOF
+          echo "local.properties generated (Supabase URL: ${SUPABASE_URL})"
 
       - name: Restore iOS build caches
         id: ios-cache
