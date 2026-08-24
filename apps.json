@@ -20,11 +20,20 @@
       "tintColor": "5B8DEF",
       "category": "entertainment",
       "version": "0.4.8",
-      "versionDate": "2026-08-23T16:41:58Z",
-      "versionDescription": "NuvioPlus 0.4.8 (113) \u2014 Ambient Hero Backdrop + upstream.",
-      "downloadURL": "https://github.com/drsphinx/NuvioPlus/releases/download/nuvioplus-0.4.8-b113/NuvioPlus-v0.4.8.ipa",
-      "size": 48991024,
+      "versionDate": "2026-08-24T08:13:28Z",
+      "versionDescription": "NuvioPlus 0.4.8 (114) \u2014 Ambient Hero Backdrop + upstream.",
+      "downloadURL": "https://github.com/drsphinx/NuvioPlus/releases/download/nuvioplus-0.4.8-b114/NuvioPlus-v0.4.8.ipa",
+      "size": 49003485,
       "versions": [
+        {
+          "version": "0.4.8",
+          "buildVersion": "114",
+          "date": "2026-08-24T08:13:28Z",
+          "localizedDescription": "NuvioPlus 0.4.8 (114) \u2014 Ambient Hero Backdrop + upstream.",
+          "downloadURL": "https://github.com/drsphinx/NuvioPlus/releases/download/nuvioplus-0.4.8-b114/NuvioPlus-v0.4.8.ipa",
+          "size": 49003485,
+          "minOSVersion": "16.1"
+        },
         {
           "version": "0.4.8",
           "buildVersion": "113",
