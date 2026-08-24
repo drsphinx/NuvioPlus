@@ -38,7 +38,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
@@ -126,7 +130,13 @@ fun HomeHeroSection(
                 itemCount = items.size,
                 coroutineScope = coroutineScope,
             )
-            .clip(RoundedCornerShape(bottomStart = 28.dp, bottomEnd = 28.dp)),
+            .then(
+                if (ambientBackdropEnabled) {
+                    Modifier
+                } else {
+                    Modifier.clip(RoundedCornerShape(bottomStart = 28.dp, bottomEnd = 28.dp))
+                },
+            ),
     ) {
         val layout = homeHeroLayout(
             maxWidthDp = maxWidth.value,
@@ -176,11 +186,16 @@ fun HomeHeroSection(
             onAmbientArtworkUrlChange?.invoke(currentItem.banner ?: currentItem.poster)
         }
 
-        val overlayTopAlpha = if (ambientBackdropEnabled) 0.02f else 0.02f
-        val overlayMidLowAlpha = if (ambientBackdropEnabled) 0.08f else 0.12f
-        val overlayMidHighAlpha = if (ambientBackdropEnabled) 0.18f else 0.34f
-        val overlayBottomAlpha = if (ambientBackdropEnabled) 0.42f else 0.78f
-        val bottomFadeEndAlpha = if (ambientBackdropEnabled) 0.55f else 1f
+        val overlayTopAlpha = 0.02f
+        val overlayMidLowAlpha = if (ambientBackdropEnabled) 0.05f else 0.12f
+        val overlayMidHighAlpha = if (ambientBackdropEnabled) 0.10f else 0.34f
+        val overlayBottomAlpha = if (ambientBackdropEnabled) 0.16f else 0.78f
+        val bottomFadeEndAlpha = if (ambientBackdropEnabled) 0f else 1f
+        val bottomFadeHeight = if (ambientBackdropEnabled) {
+            layout.bottomFadeHeight + 56.dp
+        } else {
+            layout.bottomFadeHeight
+        }
 
         Box(
             modifier = Modifier
@@ -204,7 +219,8 @@ fun HomeHeroSection(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(layout.heroHeight)
-                        .heroStretchZoom(stretchPx),
+                        .heroStretchZoom(stretchPx)
+                        .then(if (ambientBackdropEnabled) Modifier.heroAmbientBottomDissolve() else Modifier),
                 ) {
                     visiblePages.forEach { layer ->
                         AsyncImage(
@@ -243,7 +259,7 @@ fun HomeHeroSection(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(layout.bottomFadeHeight)
+                        .height(bottomFadeHeight)
                         .align(Alignment.BottomCenter)
                         .background(
                             Brush.verticalGradient(
@@ -362,11 +378,18 @@ fun HomeHeroReservedSpace(
     modifier: Modifier = Modifier,
     viewportHeight: Dp? = null,
     mobileBelowSectionHeightHint: Dp? = null,
+    ambientBackdropEnabled: Boolean = false,
 ) {
     BoxWithConstraints(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(bottomStart = 28.dp, bottomEnd = 28.dp)),
+            .then(
+                if (ambientBackdropEnabled) {
+                    Modifier
+                } else {
+                    Modifier.clip(RoundedCornerShape(bottomStart = 28.dp, bottomEnd = 28.dp))
+                },
+            ),
     ) {
         val layout = homeHeroLayout(
             maxWidthDp = maxWidth.value,
@@ -557,6 +580,21 @@ private fun HeroMetaDot() {
             .background(MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)),
     )
 }
+
+private fun Modifier.heroAmbientBottomDissolve(): Modifier =
+    graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen }
+        .drawWithContent {
+            drawContent()
+            drawRect(
+                brush = Brush.verticalGradient(
+                    colorStops = arrayOf(
+                        0.52f to Color.White,
+                        1.00f to Color.Transparent,
+                    ),
+                ),
+                blendMode = BlendMode.DstIn,
+            )
+        }
 
 private fun heroBackgroundScrollScale(scrollOffsetPx: Float): Float {
     val scaleIncrease = if (scrollOffsetPx < 0f) {

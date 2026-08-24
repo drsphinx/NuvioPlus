@@ -130,7 +130,9 @@ actual object ThemeSettingsStorage {
 
     actual fun replaceFromSyncPayload(payload: JsonObject) {
         preferences?.edit()?.apply {
-            profileScopedSyncKeys.forEach { remove(ProfileScopedKey.of(it)) }
+            profileScopedSyncKeys.forEach { key ->
+                if (key in payload) remove(ProfileScopedKey.of(key))
+            }
         }?.apply()
 
         payload.decodeSyncString(selectedThemeKey)?.let(::saveSelectedTheme)

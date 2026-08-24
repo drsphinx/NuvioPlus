@@ -61,6 +61,7 @@ actual object ThemeSettingsStorage {
             enabled,
             forKey = ProfileScopedKey.of(homeAmbientBackdropEnabledKey),
         )
+        NSUserDefaults.standardUserDefaults.synchronize()
     }
 
     actual fun loadLiquidGlassNativeTabBarEnabled(): Boolean? {
@@ -126,6 +127,7 @@ actual object ThemeSettingsStorage {
 
     actual fun replaceFromSyncPayload(payload: JsonObject) {
         profileScopedSyncKeys.forEach { key ->
+            if (key !in payload) return@forEach
             NSUserDefaults.standardUserDefaults.removeObjectForKey(ProfileScopedKey.of(key))
         }
 

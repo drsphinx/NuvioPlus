@@ -174,6 +174,7 @@ object ProfileSettingsSync {
         val signatureFlows = listOf(
             ThemeSettingsRepository.selectedThemePreference.map { "theme" },
             ThemeSettingsRepository.amoledEnabled.map { "amoled" },
+            ThemeSettingsRepository.homeAmbientBackdropEnabled.map { "home_ambient_backdrop" },
             ThemeSettingsRepository.liquidGlassNativeTabBarEnabled.map { "liquid_glass_tab_bar" },
             ThemeSettingsRepository.navBarStyle.map { "nav_bar_style" },
             PosterCardStyleRepository.uiState.map { "poster_card_style" },

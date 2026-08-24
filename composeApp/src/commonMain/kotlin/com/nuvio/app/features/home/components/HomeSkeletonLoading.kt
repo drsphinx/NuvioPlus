@@ -65,13 +65,20 @@ fun HomeSkeletonHero(
     modifier: Modifier = Modifier,
     viewportHeight: Dp? = null,
     mobileBelowSectionHeightHint: Dp? = null,
+    ambientBackdropEnabled: Boolean = false,
 ) {
     val brush = rememberHomeSkeletonBrush()
 
     BoxWithConstraints(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(bottomStart = 28.dp, bottomEnd = 28.dp)),
+            .then(
+                if (ambientBackdropEnabled) {
+                    Modifier
+                } else {
+                    Modifier.clip(RoundedCornerShape(bottomStart = 28.dp, bottomEnd = 28.dp))
+                },
+            ),
     ) {
         val layout = homeHeroLayout(
             maxWidthDp = maxWidth.value,

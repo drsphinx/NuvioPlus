@@ -932,6 +932,7 @@ fun HomeScreen(
                             modifier = Modifier,
                             viewportHeight = viewportHeight,
                             mobileBelowSectionHeightHint = mobileHeroBelowSectionHeightHint,
+                            ambientBackdropEnabled = showAmbientBackdrop,
                         )
 
                         homeUiState.heroItems.isNotEmpty() -> HomeHeroSection(
@@ -950,6 +951,7 @@ fun HomeScreen(
                             modifier = Modifier,
                             viewportHeight = viewportHeight,
                             mobileBelowSectionHeightHint = mobileHeroBelowSectionHeightHint,
+                            ambientBackdropEnabled = showAmbientBackdrop,
                         )
                     }
                 }
